@@ -3,33 +3,19 @@
 // @ You can find additional information regarding licensing of this work in LICENSE.md @
 // @ You must not remove this notice, or any other, from this software.                 @
 // @ All rights reserved.                                                               @
-// @@@@@@ At 2019-05-16 21:55 <thereisnodotcollective@gmail.com> @@@@@@@@@@@@@@@@@@@@@@@@
-
+// @@@@@@ At 2019-05-16 22:37 <thereisnodotcollective@gmail.com> @@@@@@@@@@@@@@@@@@@@@@@@
 package emerchantpay_rss_reader
 
 import (
-	"io/ioutil"
-	"net/http"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
-type FeedGetter interface {
-	Get(string) (string, error)
-}
+func TestParseFeedByUrl(t *testing.T) {
+	mockfeed := newMockFeedGetter(0)
 
-type HttpFeedGetter struct{}
-
-func newHttpFeedGetter() FeedGetter {
-	return HttpFeedGetter{}
-}
-
-func (w HttpFeedGetter) Get(url string) (string, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	return string(b), nil
+	feed, err := parseFeedByUrl(mockfeed, "https://news.ycombinator.com/rss")
+	assert.Equal(t, err, nil)
+	assert.Equal(t, len(feed), 10)
+	assert.Equal(t, feed[0], "")
 }

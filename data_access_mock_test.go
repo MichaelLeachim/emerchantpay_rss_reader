@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-func TestCalculate(t *testing.T) {
+func TestMockFeed(t *testing.T) {
 
 	mockfeed := newMockFeedGetter(0)
 	_, err := mockfeed.Get("hello world")
