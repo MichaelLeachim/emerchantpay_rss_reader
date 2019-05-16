@@ -9,7 +9,6 @@ package emerchantpay_rss_reader
 
 import (
 	"encoding/xml"
-	log "github.com/sirupsen/logrus"
 	"sync"
 	"time"
 )
@@ -43,7 +42,7 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 	return feed.Rss.Items, nil
 }
 
-func parseFeedByUrlsAsync(da FeedGetter, urls []string) []RssItem {
+func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
 	feedChan := make(chan RssItem)
 	results := []RssItem{}
 	go func() {
@@ -59,7 +58,7 @@ func parseFeedByUrlsAsync(da FeedGetter, urls []string) []RssItem {
 			defer wg.Done()
 			items, err := parseFeedByUrl(da, link)
 			if err != nil {
-				log.Warn(err)
+				l.Warn(err)
 				return
 			}
 			for _, item := range items {

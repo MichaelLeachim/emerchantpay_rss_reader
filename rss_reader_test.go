@@ -22,15 +22,28 @@ func TestParseFeedByUrl(t *testing.T) {
 
 func genMockLinks(amount int) []string {
 	data := []string{"https://www.theguardian.com/uk/rss", "https://news.ycombinator.com/rss", "not.existing.url"}
+	result := []string{}
+	for i := 0; i < amount/3; i++ {
+		result = append(result, data...)
+	}
+	return result
+}
 
+func BenchmarkParseFeedByUrlsAsync(t *testing.B) {
+	da := newMockFeedGetter(1000)
+	logger := newMockLogger()
+	mocklinks := genMockLinks(1000)
+	for n := 0; n < t.N; n++ {
+		parseFeedByUrlsAsync(da, logger, mocklinks)
+	}
 }
 
 func TestParseFeedByUrlsAsync(t *testing.T) {
-	mockfeed := newMockFeedGetter(1000)
-	links := []string{}
-	for i := 0; i < 100; i++ {
-		links = append(links, []string{"https://www.theguardian.com/uk/rss", "https://news.ycombinator.com/rss"})
 
-	}
+	da := newMockFeedGetter(1000)
+	logger := newTestLogger(t)
+	mocklinks := genMockLinks(1000)
+	feed := parseFeedByUrlsAsync(da, logger, mocklinks)
+	assert.Equal(t, len(feed), 100000)
 
 }

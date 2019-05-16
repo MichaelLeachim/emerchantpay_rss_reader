@@ -8,6 +8,7 @@
 package emerchantpay_rss_reader
 
 import (
+	logrus "github.com/sirupsen/logrus"
 	"testing"
 )
 
@@ -45,4 +46,20 @@ func (m TestLogger) Error(args ...interface{}) {
 func (m TestLogger) Warn(args ...interface{}) {
 	m.t.Log(args...)
 
+}
+
+type LogrusLogger struct {
+}
+
+func newLogrusLogger() Logger {
+	return LogrusLogger{}
+}
+
+func (m LogrusLogger) Error(args ...interface{}) {
+	logrus.Error(args...)
+
+}
+
+func (m LogrusLogger) Warn(args ...interface{}) {
+	logrus.Warn(args...)
 }
