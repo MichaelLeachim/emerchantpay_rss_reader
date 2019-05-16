@@ -43,7 +43,7 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 	return feed.Rss.Items, nil
 }
 
-func parseFeedByUrls(da FeedGetter, urls []string) []RssItem {
+func parseFeedByUrlsAsync(da FeedGetter, urls []string) []RssItem {
 	feedChan := make(chan RssItem)
 	results := []RssItem{}
 	go func() {

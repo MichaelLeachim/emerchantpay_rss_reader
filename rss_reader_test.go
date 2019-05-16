@@ -19,3 +19,18 @@ func TestParseFeedByUrl(t *testing.T) {
 	assert.Equal(t, len(feed), 10)
 	assert.Equal(t, feed[0], "")
 }
+
+func genMockLinks(amount int) []string {
+	data := []string{"https://www.theguardian.com/uk/rss", "https://news.ycombinator.com/rss", "not.existing.url"}
+
+}
+
+func TestParseFeedByUrlsAsync(t *testing.T) {
+	mockfeed := newMockFeedGetter(1000)
+	links := []string{}
+	for i := 0; i < 100; i++ {
+		links = append(links, []string{"https://www.theguardian.com/uk/rss", "https://news.ycombinator.com/rss"})
+
+	}
+
+}
