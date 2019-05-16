@@ -19,7 +19,7 @@ func TestMockFeed(t *testing.T) {
 	assert.NotEqual(t, err, nil)
 
 	data, err := mockfeed.Get("https://news.ycombinator.com/rss")
-	assert.Equal(t, len(data), 3)
+	assert.Equal(t, len(data), 13867)
 	assert.Equal(t, err, nil)
 
 }

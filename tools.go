@@ -3,34 +3,36 @@
 // @ You can find additional information regarding licensing of this work in LICENSE.md @
 // @ You must not remove this notice, or any other, from this software.                 @
 // @ All rights reserved.                                                               @
-// @@@@@@ At 2019-05-16 21:55 <thereisnodotcollective@gmail.com> @@@@@@@@@@@@@@@@@@@@@@@@
+// @@@@@@ At 2019-05-17 00:33 <thereisnodotcollective@gmail.com> @@@@@@@@@@@@@@@@@@@@@@@@
 
 package emerchantpay_rss_reader
 
 import (
-	"io/ioutil"
-	"net/http"
+	"encoding/xml"
+	"time"
 )
 
-type FeedGetter interface {
-	Get(string) (string, error)
+type rfc822 struct {
+	time.Time
 }
 
-type HttpFeedGetter struct{}
+func newRfc822(input string) (rfc822, error) {
 
-func newHttpFeedGetter() FeedGetter {
-	return HttpFeedGetter{}
+}
+func (c *rfc822) parseTime(input string) (time.Time, error) {
+	const RFC822 = "Mon, 02 Jan 2006 15:04:05 -0700"
+	parse, err := time.Parse(RFC822, v)
+	if err != nil {
+		return err
+	}
+
 }
 
-func (w HttpFeedGetter) Get(url string) (string, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	return string(b), nil
+func (c *rfc822) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+
+	var v string
+	d.DecodeElement(&v, &start)
+
+	*c = rfc822{parse}
+	return nil
 }

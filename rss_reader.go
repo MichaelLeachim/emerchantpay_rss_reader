@@ -10,23 +10,22 @@ package emerchantpay_rss_reader
 import (
 	"encoding/xml"
 	"sync"
-	"time"
 )
 
 type RssItem struct {
-	Title       string    `xml:"title"`
-	Source      string    `xml:"source"`
-	SourceURL   string    `xml:"source"`
-	Link        string    `xml:"link"`
-	PubishDate  time.Time `xml:"pubDate"`
-	Description string    `xml:"description"`
+	Title       string `xml:"title"`
+	Source      string `xml:"source"`
+	SourceURL   string `xml:"sourceURL"`
+	Link        string `xml:"link"`
+	Description string `xml:"description"`
+	PubishDate  rfc822 `xml:"pubDate"`
 }
 
-type RssFeed struct {
-	Rss struct {
+type Rss struct {
+	Channel struct {
 		Items []RssItem `xml:"item"`
-	} `xml:"rss"`
-}
+	} `xml:"channel"`
+} // `xml:"rss"`
 
 func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 	res, err := da.Get(url)
@@ -34,12 +33,12 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 		return []RssItem{}, err
 	}
 
-	feed := RssFeed{}
+	feed := Rss{}
 	err = xml.Unmarshal([]byte(res), &feed)
 	if err != nil {
 		return []RssItem{}, err
 	}
-	return feed.Rss.Items, nil
+	return feed.Channel.Items, nil
 }
 
 func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
@@ -69,9 +68,8 @@ func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
 
 	wg.Wait()
 	return results
-
 }
 
 func Parse(urls []string) []RssItem {
-	return parseFeedByUrls(newHttpFeedGetter(), urls)
+	return parseFeedByUrlsAsync(newHttpFeedGetter(), newLogrusLogger(), urls)
 }

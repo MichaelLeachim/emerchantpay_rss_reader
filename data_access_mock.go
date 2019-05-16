@@ -28,7 +28,7 @@ func (s MockFeedGetter) Get(url string) (string, error) {
 	case "https://news.ycombinator.com/rss":
 		rsslink = "testdata/news.ycombinator.com.rss"
 	case "https://www.theguardian.com/uk/rss":
-		rsslink = "theguardian.rss"
+		rsslink = "testdata/theguardian.rss"
 	}
 	time.Sleep(time.Duration(s.delay))
 
@@ -38,7 +38,7 @@ func (s MockFeedGetter) Get(url string) (string, error) {
 
 	bytes, err := ioutil.ReadFile(rsslink)
 	if err != nil {
-		panic("Directory ./testdata should exist in order for tests to run correctly")
+		panic(err)
 	}
 	return string(bytes), nil
 }
