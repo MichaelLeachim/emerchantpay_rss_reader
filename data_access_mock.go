@@ -14,11 +14,11 @@ import (
 )
 
 type MockFeedGetter struct {
-	delay int
+	delay time.Duration
 }
 
 func newMockFeedGetter(delay int) FeedGetter {
-	return MockFeedGetter{delay: delay}
+	return MockFeedGetter{delay: time.Duration(time.Millisecond * time.Duration(delay))}
 }
 
 func (s MockFeedGetter) Get(url string) (string, error) {
@@ -30,7 +30,7 @@ func (s MockFeedGetter) Get(url string) (string, error) {
 	case "https://www.theguardian.com/uk/rss":
 		rsslink = "testdata/theguardian.rss"
 	}
-	time.Sleep(time.Duration(s.delay))
+	time.Sleep(s.delay)
 
 	if len(rsslink) == 0 {
 		return "", errors.New("Cannot open URL: " + url)

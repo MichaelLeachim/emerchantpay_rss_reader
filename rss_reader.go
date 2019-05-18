@@ -38,19 +38,13 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 
 func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
 	feedChan := make(chan RssItem)
-	results := []RssItem{}
-	go func() {
-		for item := range feedChan {
-			results = append(results, item)
-		}
-	}()
 
 	wg := sync.WaitGroup{}
 	wg.Add(len(urls))
 	for _, link := range urls {
-		go func() {
+		go func(url string) {
 			defer wg.Done()
-			items, err := parseFeedByUrl(da, link)
+			items, err := parseFeedByUrl(da, url)
 			if err != nil {
 				l.Warn(err)
 				return
@@ -58,10 +52,18 @@ func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
 			for _, item := range items {
 				feedChan <- item
 			}
-		}()
+		}(link)
 	}
 
+	results := []RssItem{}
+	go func() {
+		for item := range feedChan {
+			results = append(results, item)
+		}
+	}()
+
 	wg.Wait()
+
 	return results
 }
 

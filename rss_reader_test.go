@@ -43,7 +43,7 @@ func genMockLinks(amount int) []string {
 }
 
 func BenchmarkParseFeedByUrlsAsync(t *testing.B) {
-	da := newMockFeedGetter(1000)
+	da := newMockFeedGetter(500)
 	logger := newMockLogger()
 	mocklinks := genMockLinks(1000)
 	for n := 0; n < t.N; n++ {
@@ -57,6 +57,6 @@ func TestParseFeedByUrlsAsync(t *testing.T) {
 	logger := newMockLogger()
 	mocklinks := genMockLinks(1000)
 	feed := parseFeedByUrlsAsync(da, logger, mocklinks)
-	assert.Equal(t, len(feed), 990)
+	assert.Equal(t, len(feed), 9990)
 
 }
