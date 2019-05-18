@@ -9,7 +9,7 @@ package emerchantpay_rss_reader
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
+	// "time"
 )
 
 func TestParseFeedByUrl(t *testing.T) {
@@ -18,14 +18,7 @@ func TestParseFeedByUrl(t *testing.T) {
 	feed, err := parseFeedByUrl(mockfeed, "https://news.ycombinator.com/rss")
 	assert.Equal(t, err, nil)
 	assert.Equal(t, len(feed), 30)
-	assert.Equal(t, feed[0],
-		RssItem{Title: "Sony and Microsoft set rivalry aside for streaming alliance",
-			Source:      "",
-			SourceURL:   "",
-			Link:        "https://asia.nikkei.com/Business/Business-deals/Sony-and-Microsoft-set-rivalry-aside-for-streaming-alliance",
-			Description: "<a href=\"https://news.ycombinator.com/item?id=19930955\">Comments</a>",
-			PubishDate:  rfc822{Time: time.Time{wall: 0x0, ext: 63693624469, loc: (*time.Location)(0xc000062900)}}})
-
+	assert.Equal(t, feed[0], "")
 }
 
 func genMockLinks(amount int) []string {
