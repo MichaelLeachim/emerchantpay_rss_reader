@@ -12,54 +12,54 @@ import (
 	"testing"
 )
 
-type Logger interface {
+type logger interface {
 	Warn(args ...interface{})
 	Error(args ...interface{})
 }
 
-type MockLogger struct{}
+type mockLogger struct{}
 
-func newMockLogger() Logger {
-	return MockLogger{}
+func newMockLogger() logger {
+	return mockLogger{}
 }
 
-func (m MockLogger) Error(args ...interface{}) {
+func (m mockLogger) Error(args ...interface{}) {
 	return
 }
-func (m MockLogger) Warn(args ...interface{}) {
+func (m mockLogger) Warn(args ...interface{}) {
 	return
 }
 
-type TestLogger struct {
+type testLogger struct {
 	t *testing.T
 }
 
-func newTestLogger(t *testing.T) Logger {
-	return TestLogger{t: t}
+func newTestLogger(t *testing.T) logger {
+	return testLogger{t: t}
 }
 
-func (m TestLogger) Error(args ...interface{}) {
+func (m testLogger) Error(args ...interface{}) {
 	m.t.Log(args...)
 	return
 }
 
-func (m TestLogger) Warn(args ...interface{}) {
+func (m testLogger) Warn(args ...interface{}) {
 	m.t.Log(args...)
 
 }
 
-type LogrusLogger struct {
+type logrusLogger struct {
 }
 
-func newLogrusLogger() Logger {
-	return LogrusLogger{}
+func newLogrusLogger() logger {
+	return logrusLogger{}
 }
 
-func (m LogrusLogger) Error(args ...interface{}) {
+func (m logrusLogger) Error(args ...interface{}) {
 	logrus.Error(args...)
 
 }
 
-func (m LogrusLogger) Warn(args ...interface{}) {
+func (m logrusLogger) Warn(args ...interface{}) {
 	logrus.Warn(args...)
 }

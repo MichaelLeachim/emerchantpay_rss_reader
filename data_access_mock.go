@@ -13,15 +13,15 @@ import (
 	"time"
 )
 
-type MockFeedGetter struct {
+type mockFeedGetter struct {
 	delay time.Duration
 }
 
-func newMockFeedGetter(delay int) FeedGetter {
-	return MockFeedGetter{delay: time.Duration(time.Millisecond * time.Duration(delay))}
+func newMockFeedGetter(delay int) feedGetter {
+	return mockFeedGetter{delay: time.Duration(time.Millisecond * time.Duration(delay))}
 }
 
-func (s MockFeedGetter) Get(url string) (string, error) {
+func (s mockFeedGetter) Get(url string) (string, error) {
 	rsslink := ""
 
 	switch url {

@@ -12,17 +12,17 @@ import (
 	"net/http"
 )
 
-type FeedGetter interface {
+type feedGetter interface {
 	Get(string) (string, error)
 }
 
-type HttpFeedGetter struct{}
+type httpFeedGetter struct{}
 
-func newHttpFeedGetter() FeedGetter {
-	return HttpFeedGetter{}
+func newHttpFeedGetter() feedGetter {
+	return httpFeedGetter{}
 }
 
-func (w HttpFeedGetter) Get(url string) (string, error) {
+func (w httpFeedGetter) Get(url string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", err

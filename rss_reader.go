@@ -18,7 +18,7 @@ type rss struct {
 	} `xml:"channel"`
 }
 
-func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
+func parseFeedByUrl(da feedGetter, url string) ([]RssItem, error) {
 	res, err := da.Get(url)
 	if err != nil {
 		return []RssItem{}, err
@@ -36,7 +36,7 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 	return result, nil
 }
 
-func parseFeedByUrlsAsync(da FeedGetter, l Logger, urls []string) []RssItem {
+func parseFeedByUrlsAsync(da feedGetter, l logger, urls []string) []RssItem {
 	feedChan := make(chan RssItem)
 
 	wg := sync.WaitGroup{}
