@@ -10,31 +10,11 @@ package emerchantpay_rss_reader
 import (
 	"encoding/xml"
 	"sync"
-	"time"
 )
-
-type RssItemBase struct {
-	Title       string    `xml:"title"`
-	Source      string    `xml:"source"`
-	SourceURL   string    `xml:"sourceURL"`
-	Link        string    `xml:"link"`
-	Description string    `xml:"description"`
-	PubishDate  time.Time `xml:"pubDate"`
-}
-
-type RssItem struct {
-	RssItemBase
-	PubishDate time.Time
-}
-
-type RssItemParsed struct {
-	RssItemBase
-	PublishDate rfc822 `xml:"pubDate"`
-}
 
 type Rss struct {
 	Channel struct {
-		Items []RssItemParsed `xml:"item"`
+		Items []rssItemParsed `xml:"item"`
 	} `xml:"channel"`
 }
 
@@ -51,7 +31,7 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 	}
 	result := []RssItem{}
 	for _, item := range feed.Channel.Items {
-		result = append(result, RssItem{RssItemBase: item.RssItemBase, PubishDate: time.Time(item.PubishDate)})
+		result = append(result, rssItemParsedToRssItemExported(item))
 	}
 	return result, nil
 }

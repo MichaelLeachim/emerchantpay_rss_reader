@@ -16,13 +16,14 @@ type rfc822 struct {
 	time.Time
 }
 
-func newRfc822(input string) (rfc822, error) {
+func (c *rfc822) parseIntoSelf(input string) error {
 	const RFC822 = "Mon, 02 Jan 2006 15:04:05 -0700"
 	parse, err := time.Parse(RFC822, input)
 	if err != nil {
-		return rfc822{}, err
+		return err
 	}
-	return rfc822{parse}, nil
+	*c = rfc822{parse}
+	return nil
 }
 
 func (c *rfc822) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -31,10 +32,5 @@ func (c *rfc822) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if err != nil {
 		return err
 	}
-	res, err := newRfc822(v)
-	if err != nil {
-		return err
-	}
-	*c = res
-	return nil
+	return c.parseIntoSelf(v)
 }
