@@ -33,7 +33,9 @@ Parse(urls []string) []RssItem
 ```
 
 The `Parse`  function is asynchronous and is implemented
-with `sync` package and goroutines. 
+with `sync` package and goroutines. It also requires 
+`github.com/sirupsen/logrus` external package for logginng. 
+
 
 ## How to install run and test
 
@@ -50,6 +52,12 @@ go test;
 go test -bench; 
 
 ```
+
+## Additional notes
+
+* Parser is implemented using DI principle in order 
+  to separate concerns and test the main method easily.
+  
 
 
 
