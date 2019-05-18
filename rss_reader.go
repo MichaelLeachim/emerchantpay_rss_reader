@@ -12,7 +12,7 @@ import (
 	"sync"
 )
 
-type Rss struct {
+type rss struct {
 	Channel struct {
 		Items []rssItemParsed `xml:"item"`
 	} `xml:"channel"`
@@ -24,7 +24,7 @@ func parseFeedByUrl(da FeedGetter, url string) ([]RssItem, error) {
 		return []RssItem{}, err
 	}
 
-	feed := Rss{}
+	feed := rss{}
 	err = xml.Unmarshal([]byte(res), &feed)
 	if err != nil {
 		return []RssItem{}, err
